@@ -3,6 +3,9 @@ import tensorflow_mri as tfmr
 import tensorflow_nufft as tfft
 import tensorflow_probability as tfp
 
+from matplotlib import pyplot as plt
+from matplotlib import animation as ani
+import numpy as np
 
 def display_fn(complex_part='abs',selected_image=-1,concat_axis=-2,input_shape=None,output_shape=None):
   """Returns a display function for tensorboard Images:
@@ -111,3 +114,62 @@ def display_fn(complex_part='abs',selected_image=-1,concat_axis=-2,input_shape=N
 
   _CONCAT_DTYPE = tf.float32
   return _display_fn
+
+
+def plotVid(imgx,axis=2,title='',savepath=None,vmin=None,vmax=None,interval=200,cmap='gray',overlay=None,figsize=(15,5),bg_color='w'):
+
+    
+    sha=imgx.shape
+    plt.rc('animation', html='html5')
+    fig = plt.figure(figsize=figsize, facecolor=bg_color) # make figure
+    if bg_color=='k':
+        fig.suptitle(title, fontsize=13,color='w')
+        
+    else:
+        fig.suptitle(title, fontsize=13)
+    ax = plt.subplot(111)
+    fig.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
+    
+    ax.set_frame_on(False)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    plt.axis('off')
+    ims=[]
+    if overlay is not None:
+        import dlex
+        imgx=dlex.ops.image_ops.label_to_rgb(overlay, imgx, bg_label=0)
+
+    if axis==2:
+        for i in range(sha[axis]):
+            ims.append(imgx[:,:,i])
+    elif axis==0:
+        for i in range(sha[axis]):
+            ims.append(imgx[i,:,:])
+        
+    elif axis==1:
+        for i in range(sha[axis]):
+            ims.append(imgx[:,i,:])
+    imagelist=ims
+    
+    if vmax is None:
+        vmax=np.max(imagelist[:][:])*0.8
+    if vmin is None:
+        vmin=np.min(imagelist[:][:])
+    im = plt.imshow(imagelist[0], cmap=plt.get_cmap(cmap), vmin=vmin, vmax=vmax)
+    
+    # function to update figure
+    def updatefig(j):
+        # set the data in the axesimage object
+        im.set_array(imagelist[j])
+        # return the artists set
+        return [im]
+    # kick off the animation
+    animation2 = ani.FuncAnimation(fig, updatefig, frames=range(sha[axis]),interval=interval, blit=True)
+    plt.show()
+    
+    if savepath is not None:
+        if savepath.endswith('.gif'):
+            animation2.save((savepath))
+        else:
+            animation2.save((savepath + '.mp4'))
+    return animation2
