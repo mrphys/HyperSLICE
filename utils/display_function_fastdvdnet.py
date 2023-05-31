@@ -1,8 +1,5 @@
 import tensorflow as tf
 import tensorflow_mri as tfmr
-import tensorflow_nufft as tfft
-import tensorflow_probability as tfp
-
 from matplotlib import pyplot as plt
 from matplotlib import animation as ani
 import numpy as np
