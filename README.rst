@@ -10,18 +10,50 @@ Installation
 
 .. start-install
 
-All required packages can be installed in a virtual environment 
-You can install TensorFlow MRI with ``pip``:
+All required packages can be installed in a virtual environment:
 
 .. code-block:: console
 
-    $ pip install tensorflow-mri
+    $ conda env create --name hyperslice --file environment.yml
 
-Note that only Linux is currently supported.
+Note that only Linux is supported.
+
 
 Training and testing
 --------------------
 
-Code for training and testing can be run from the Ipython notebook file ...
+Once the environment created, activate using: 
+.. code-block:: console
 
-Configuration of the 
+    $ conda activate hyperslice.
+
+You can then run:
+
+- the python file example.py file from project directory.
+- 
+.. code-block:: console
+
+    $ python example.py
+
+- or the ipython notebook example.ipynb (to see intermediate results)
+
+Results are saved in ./Training_folder (as in the exemple model ./Training_folder/Exemple_Trained_FastDVDnet)
+
+Logs can be visualised using tensorboard:
+
+.. code-block:: console
+
+    $ tensorboard --logdir path_to_directory
+
+
+
+Acknowledgments
+---------------
+
+Code Relies heavily on TensorFlow and TensorFlow_MRI:  
+
+Abadi M, Barham P, Chen J, et al. TensorFlow: A System for Large-Scale Machine Learning
+TensorFlow: A system for large-scale machine learning. Proceedings of the 12th USENIX
+Symposium on Operating Systems Design and Implementation 2016:265–283.
+
+Montalt Tordera J. TensorFlow MRI. 2022 doi: 10.5281/ZENODO.7120930.
