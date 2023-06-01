@@ -15,8 +15,6 @@
 """Work-in-progress layers."""
 
 import tensorflow as tf
-
-from tensorflow_mri.python.layers import conv_blocks
 import model.conv_blocks as local_conv_blocks
 from tensorflow_mri.python.util import check_util
 from tensorflow_mri.python.util import layer_util
