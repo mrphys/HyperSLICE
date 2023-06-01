@@ -1,4 +1,4 @@
-name: tfmri2
+name: hyperslice
 channels:
   - defaults
 dependencies:
