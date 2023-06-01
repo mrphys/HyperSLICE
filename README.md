@@ -43,6 +43,13 @@ Logs can be visualised using tensorboard:
 $ tensorboard --logdir path_to_directory
 ```
 
+Video with abrupt image change: 
+Input - Truth - Reconstructed
+
+https://github.com/olivier-jaubert/HyperSLICE/assets/68073827/7f5a7762-bdf4-444e-b877-6717549328de
+
+
+
 Acknowledgments
 ===============
 
