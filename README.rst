@@ -23,6 +23,7 @@ Training and testing
 --------------------
 
 Once the environment created, activate using: 
+
 .. code-block:: console
 
     $ conda activate hyperslice.
@@ -30,14 +31,14 @@ Once the environment created, activate using:
 You can then run:
 
 - the python file example.py file from project directory.
-- 
+
 .. code-block:: console
 
     $ python example.py
 
 - or the ipython notebook example.ipynb (to see intermediate results)
 
-Results are saved in ./Training_folder (as in the exemple model ./Training_folder/Exemple_Trained_FastDVDnet)
+Results are saved in ./Training_folder (as in the already trained exemple model ./Training_folder/Exemple_Trained_FastDVDnet)
 
 Logs can be visualised using tensorboard:
 
@@ -50,10 +51,10 @@ Logs can be visualised using tensorboard:
 Acknowledgments
 ---------------
 
-Code Relies heavily on TensorFlow and TensorFlow_MRI:  
+Code relies heavily on TensorFlow [1] and TensorFlow_MRI [2]:  
 
-Abadi M, Barham P, Chen J, et al. TensorFlow: A System for Large-Scale Machine Learning
+[1] Abadi M, Barham P, Chen J, et al. TensorFlow: A System for Large-Scale Machine Learning
 TensorFlow: A system for large-scale machine learning. Proceedings of the 12th USENIX
 Symposium on Operating Systems Design and Implementation 2016:265–283.
 
-Montalt Tordera J. TensorFlow MRI. 2022 doi: 10.5281/ZENODO.7120930.
+[2] Montalt Tordera J. TensorFlow MRI. 2022 doi: 10.5281/ZENODO.7120930.
