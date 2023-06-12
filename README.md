@@ -14,11 +14,11 @@ The ethics does not allow sharing medical image data.
 The code uses natural images of roses with additional simulation of the coils and simple motion.   
 
 Example with abrupt image change: Input - Truth - Reconstructed
--------------------------------------------------------------
+-------
 
-https://github.com/olivier-jaubert/HyperSLICE/assets/68073827/e7e61850-1fd5-4fec-aaee-0a426a3693e9
+https://github.com/mrphys/HyperSLICE/assets/68073827/fb347228-fc37-4315-a637-eeb7fe3c0441
 
-
+------------------------------------------------------
 
 Installation
 ============
