@@ -16,7 +16,8 @@ The code uses natural images of roses with additional simulation of the coils an
 Example with abrupt image change: Input - Truth - Reconstructed
 -------
 
-https://github.com/mrphys/HyperSLICE/assets/68073827/fb347228-fc37-4315-a637-eeb7fe3c0441
+
+https://github.com/mrphys/HyperSLICE/assets/68073827/373de9ca-e23e-4adb-ae22-36ef758b539a
 
 ------------------------------------------------------
 
