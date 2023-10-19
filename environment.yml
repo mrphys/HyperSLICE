@@ -63,5 +63,6 @@ dependencies:
     - tensorflow-mri==0.18.0
     - tensorflow-nufft==0.7.1
     - tensorflow-probability==0.16.0
+    - keras-tuner
     
 prefix: /home/oj20/anaconda3/envs/tfmri2
