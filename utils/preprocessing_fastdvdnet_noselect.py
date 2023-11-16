@@ -41,7 +41,8 @@ def preprocessing_fn(base_resolution=128,
       # Make fully sampled multicoil image.
       image = make_fs_rtcine_image(kspace, image_shape, roll=roll, phases=phases,keep_external_signal=False)
       #print(image.shape,kspace.shape)
-      scalingfactor=tf.cast(tf.reduce_max(tf.abs(image)),image.dtype)
+      ccimage = tfmr.coils.combine_coils(image, coil_axis=-3) 
+      scalingfactor=tf.cast(tf.reduce_max(tf.abs(ccimage)),image.dtype)
       image=image/scalingfactor
       kspace=kspace/scalingfactor
       

@@ -39,6 +39,10 @@ class HyperModelFastDVDnet(kt.HyperModel):
   def fit(self, hp, model, datasets,config_preproc,config_traj,**kwargs):
     """Fit the model
     datasets: list of 2 tf.data.Datasets ([0] train and [1] validation)"""
+    #Set seed for all packages
+    seed_value=1
+    tf.random.set_seed(seed_value)
+
     config_traj_temp=config_traj.copy()
 
     config_traj_temp['ordering']=hp.Choice('ordering',config_traj['ordering'])
@@ -47,7 +51,7 @@ class HyperModelFastDVDnet(kt.HyperModel):
     config_traj_temp['pre_vd_outer_cutoff']=hp.Float('pre_vdo',config_traj['pre_vd_outer_cutoff'][0],config_traj['pre_vd_outer_cutoff'][1])
     config_traj_temp['vd_outer_density']=hp.Float('outer_den',config_traj['vd_outer_density'][0],config_traj['vd_outer_density'][1])
     config_traj_temp['vd_type']=hp.Choice('vd_type',['linear','hanning','quadratic'])
-
+    print('Traj params:',config_traj_temp)
     traj_function=preproc_traj.create_traj_fn(**config_traj_temp)
     preproc_function=preproc_fastdvdnet.preprocessing_fn(**config_preproc)
     roll_function=preproc_roll.preprocessing_fn()
@@ -65,30 +69,26 @@ class HyperModelFastDVDnet(kt.HyperModel):
         dataset=dataset.batch(1,drop_remainder=True)
         dataset=dataset.prefetch(buffer_size=-1)
         dataset_withtransforms.append(dataset)
-    if 'epochs' not in kwargs:
-        kwargs['epochs'] = 5
+
+    if 'epochs' in kwargs:
+        
+        initial_epoch =0
+        last_epoch = kwargs['epochs']
     
-    if 'saveimages' in kwargs and kwargs['saveimages'] is True:
-        display_fn=display_func.display_fn(complex_part='abs',selected_image=-1)
-        kwargs['callbacks'].append(tfmri.callbacks.TensorBoardImages(log_dir=os.path.join(exp_dir,'logs'),
-            max_images=2,x= dataset_withtransforms[1],display_fn=display_fn))
-    # if 'callbacks' not in kwargs:
-    #     callbacks=[]
-    #     checkpoint_filepath=os.path.join(exp_dir,'ckpt/saved_model')
-    #     callbacks.append(tf.keras.callbacks.ModelCheckpoint(
-    #                                                     filepath=checkpoint_filepath,
-    #                                                     monitor='val_loss',
-    #                                                     mode='min',
-    #                                                     save_weights_only=False,
-    #                                                     save_best_only=True))
-    #     callbacks.append(tf.keras.callbacks.TensorBoard(log_dir=os.path.join(exp_dir,'logs')))
-    #     kwargs['callbacks'] = callbacks
-    print(kwargs)
+    elif 'tuner/initial_epoch' in hp:
+        initial_epoch = hp['tuner/initial_epoch']
+        last_epoch = hp['tuner/epochs']
+    
+    else:
+        initial_epoch =0
+        last_epoch = 5
+        
     history=model.fit(dataset_withtransforms[0],
-          epochs=kwargs['epochs'],
+          initial_epoch= initial_epoch,
+          epochs=last_epoch,
           verbose=1,
           callbacks=kwargs['callbacks'],
           validation_data=dataset_withtransforms[1])
 
     return history
-
+  
