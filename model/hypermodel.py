@@ -6,7 +6,8 @@ import tensorflow_mri as tfmri
 import utils.preprocessing_trajectory_gen as preproc_traj
 import utils.preprocessing_fastdvdnet_noselect as preproc_fastdvdnet
 import utils.preprocessing_rolling_fastdvdnet as preproc_roll
-import utils.display_function_fastdvdnet as display_func
+import random
+
 
 class HyperModelFastDVDnet(kt.HyperModel):
   def __init__(self,
@@ -26,6 +27,9 @@ class HyperModelFastDVDnet(kt.HyperModel):
 
   def build(self,hp):
     #Define and compile Model
+    seed_value=1
+    random.seed(seed_value)
+    tf.random.set_seed(seed_value)
     image_inputs= tf.keras.Input(self.inputs_shape)
     outputs=layers.FastDVDNet(**self.config_model)(image_inputs)
     model=tf.keras.Model(inputs=image_inputs,outputs=outputs)
@@ -41,8 +45,10 @@ class HyperModelFastDVDnet(kt.HyperModel):
     datasets: list of 2 tf.data.Datasets ([0] train and [1] validation)"""
     #Set seed for all packages
     seed_value=1
+    random.seed(seed_value)
     tf.random.set_seed(seed_value)
 
+    print('Traj params pre:',hp.values)
     config_traj_temp=config_traj.copy()
 
     config_traj_temp['ordering']=hp.Choice('ordering',config_traj['ordering'])
@@ -51,7 +57,7 @@ class HyperModelFastDVDnet(kt.HyperModel):
     config_traj_temp['pre_vd_outer_cutoff']=hp.Float('pre_vdo',config_traj['pre_vd_outer_cutoff'][0],config_traj['pre_vd_outer_cutoff'][1])
     config_traj_temp['vd_outer_density']=hp.Float('outer_den',config_traj['vd_outer_density'][0],config_traj['vd_outer_density'][1])
     config_traj_temp['vd_type']=hp.Choice('vd_type',['linear','hanning','quadratic'])
-    print('Traj params:',config_traj_temp)
+    print('Traj params post:',config_traj_temp)
     traj_function=preproc_traj.create_traj_fn(**config_traj_temp)
     preproc_function=preproc_fastdvdnet.preprocessing_fn(**config_preproc)
     roll_function=preproc_roll.preprocessing_fn()
@@ -63,7 +69,7 @@ class HyperModelFastDVDnet(kt.HyperModel):
         if pp==0:
             dataset=dataset.cache()
         dataset=dataset.map(roll_function,num_parallel_calls=1)
-        dataset=dataset.shuffle(buffer_size=8,seed=1)
+        #dataset=dataset.shuffle(buffer_size=8,seed=1)
         if pp>0:
             dataset=dataset.cache()
         dataset=dataset.batch(1,drop_remainder=True)
