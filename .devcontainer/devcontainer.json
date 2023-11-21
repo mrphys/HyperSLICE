@@ -1,0 +1,25 @@
+{
+	"dockerFile": "./Dockerfile",
+	"context": "..",
+	"customizations": {
+		"vscode": {
+		  "extensions":  [
+		"ms-python.python",
+		"github.copilot",
+		"ms-toolsai.jupyter"
+	]}
+	},
+	"runArgs": [
+		// Enable GPUs.
+		"--gpus=all"
+	],
+	"mounts": [
+		// For plotting.
+		"type=bind,source=/tmp/.X11-unix,target=/tmp/.X11-unix"
+	],
+	"containerEnv": {
+		// For plotting.
+		"DISPLAY": "${localEnv:DISPLAY}"
+	},
+	"remoteUser": "vscode"
+}
